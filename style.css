@@ -203,7 +203,9 @@ button { font: inherit; }
 .flavors { padding-block: 110px 100px; }
 .section-heading-row { grid-template-columns: 1fr auto; align-items: end; }
 .carousel-controls { display:flex; gap:8px; padding-bottom:4px; }
-.snap-carousel { display:flex; gap:14px; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; overscroll-behavior-inline:contain; scroll-behavior:smooth; scrollbar-width:none; -ms-overflow-style:none; touch-action: pan-x pan-y pinch-zoom; -webkit-overflow-scrolling:touch; scroll-padding-inline: 0; }
+.snap-carousel { display:flex; width:100%; max-width:100%; gap:14px; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scroll-behavior:smooth; scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch; touch-action:auto; overscroll-behavior-inline:contain; scroll-padding-inline:0; cursor:grab; }
+.snap-carousel.is-dragging{scroll-snap-type:none;cursor:grabbing}
+.snap-carousel img,.snap-carousel figure{pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
 .snap-carousel::-webkit-scrollbar { display:none; }
 .flavor-card { flex: 0 0 clamp(270px, 31vw, 390px); scroll-snap-align:start; scroll-snap-stop:always; border-radius:24px; overflow:hidden; border:1px solid var(--line); background:rgba(255,255,255,.18); }
 .flavor-card img { width:100%; aspect-ratio: 1/.8; object-fit:cover; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
@@ -370,3 +372,226 @@ button { font: inherit; }
   .gallery-carousel figure, .gallery-carousel figure:nth-child(even) { flex-basis:88vw; height:410px; }
   .schedule-grid { grid-template-columns:1fr; gap:0; }
 }
+
+
+/* Cardápio demonstrativo */
+.menu-demo-cta{margin-top:28px;padding:22px;border:1px solid var(--line);border-radius:22px;background:rgba(248,242,230,.68);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.menu-demo-cta>div>span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);font-weight:800}
+.menu-demo-cta h3{margin:5px 0 6px;font:600 32px/1 var(--serif);letter-spacing:-.025em}
+.menu-demo-cta p{margin:0;max-width:650px;color:var(--ink-soft);font-size:10px;line-height:1.6}
+.menu-demo-cta .button{flex:0 0 auto}
+@media(max-width:760px){.menu-demo-cta{align-items:stretch;flex-direction:column;padding:18px}.menu-demo-cta h3{font-size:28px}.menu-demo-cta .button{width:100%}}
+
+/* v4 polish: image-backed hero, static Google map and tactile microinteractions */
+.hero{position:relative;isolation:isolate}
+.hero::before,.hero::after{content:"";position:absolute;z-index:0;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);pointer-events:none;background-size:cover;background-position:center;opacity:.14}
+.hero::before{background-image:linear-gradient(90deg,rgba(239,232,217,.96) 0%,rgba(239,232,217,.80) 42%,rgba(239,232,217,.34) 100%),url('fachada-wide.jpg')}
+.hero::after{background-image:linear-gradient(90deg,rgba(239,232,217,.97) 0%,rgba(239,232,217,.84) 42%,rgba(239,232,217,.42) 100%),url('interior.jpg');opacity:0;animation:heroBackdropCrossfade 14s ease-in-out infinite}
+.hero>*{position:relative;z-index:1}
+@keyframes heroBackdropCrossfade{0%,38%{opacity:0}50%,82%{opacity:.15}94%,100%{opacity:0}}
+
+.map-wrap iframe{pointer-events:none!important;user-select:none;-webkit-user-select:none;filter:sepia(.18) saturate(.82) contrast(.96)}
+.map-static-shield{position:absolute;inset:0;z-index:1;background:transparent;pointer-events:auto;cursor:default}
+.map-badge{z-index:2;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease}
+.map-wrap:hover .map-badge{transform:translateY(-3px);box-shadow:0 18px 34px rgba(0,0,0,.18)}
+
+.wa-icon img,.floating-whatsapp img{object-fit:contain;mix-blend-mode:normal}
+.wa-icon{padding:4px}
+.button:active,.icon-button:active,.carousel-button:active,.menu-toggle:active,.menu-close:active{transform:scale(.965)}
+.hero-card{transition:box-shadow .35s ease,filter .35s ease}
+.hero-card:hover{box-shadow:0 34px 84px rgba(37,28,23,.22)}
+.feature-card:active,.flavor-card:active{transform:scale(.993)}
+
+@media(max-width:760px){
+  .hero::before,.hero::after{opacity:.11;background-position:62% center}
+  .hero::after{animation-name:heroBackdropCrossfadeMobile}
+  @keyframes heroBackdropCrossfadeMobile{0%,38%{opacity:0}50%,82%{opacity:.12}94%,100%{opacity:0}}
+}
+
+
+/* v5 refinements: stronger hero photography + green visit card */
+.hero::before,.hero::after{opacity:.252}
+.hero::after{opacity:0}
+@keyframes heroBackdropCrossfade{0%,38%{opacity:0}50%,82%{opacity:.27}94%,100%{opacity:0}}
+
+.visit-card{background:var(--green);color:var(--cream);border-color:rgba(255,255,255,.10);box-shadow:0 30px 72px rgba(31,48,39,.18)}
+.visit-copy .eyebrow{color:#d9bd91}
+.visit-copy .eyebrow>span{background:currentColor}
+.visit-copy h2 em{color:#d9bd91}
+.visit-copy p{color:rgba(248,242,230,.76)}
+.schedule-grid div{border-top-color:rgba(248,242,230,.18)}
+.schedule-grid span{color:rgba(248,242,230,.58)}
+.schedule-grid strong{color:var(--cream)}
+.visit-card .button-primary{background:var(--cream);color:var(--green);border-color:var(--cream);box-shadow:0 12px 28px rgba(18,28,22,.18)}
+.visit-card .button-primary:hover{background:#fffaf0;color:var(--green);box-shadow:0 16px 34px rgba(18,28,22,.22)}
+.visit-card .button-ghost{color:var(--cream);border-color:rgba(248,242,230,.34);background:rgba(255,255,255,.035)}
+.visit-card .button-ghost:hover{background:rgba(255,255,255,.10);border-color:rgba(248,242,230,.5)}
+
+@media(max-width:760px){
+  .hero::before,.hero::after{opacity:.198}
+  .hero::after{opacity:0}
+  @keyframes heroBackdropCrossfadeMobile{0%,38%{opacity:0}50%,82%{opacity:.216}94%,100%{opacity:0}}
+}
+
+
+/* v7: hero photograph is intentionally much more visible (~70%) */
+.hero::before{
+  opacity:1;
+  background-image:linear-gradient(90deg,rgba(239,232,217,.32) 0%,rgba(239,232,217,.27) 44%,rgba(239,232,217,.15) 100%),url('fachada-wide.jpg');
+}
+.hero::after{
+  opacity:0;
+  background-image:linear-gradient(90deg,rgba(239,232,217,.32) 0%,rgba(239,232,217,.27) 44%,rgba(239,232,217,.15) 100%),url('interior.jpg');
+}
+@keyframes heroBackdropCrossfade{0%,38%{opacity:0}50%,82%{opacity:1}94%,100%{opacity:0}}
+@media(max-width:760px){
+  .hero::before{opacity:1;background-position:62% center;background-image:linear-gradient(90deg,rgba(239,232,217,.34) 0%,rgba(239,232,217,.28) 48%,rgba(239,232,217,.16) 100%),url('fachada-wide.jpg')}
+  .hero::after{opacity:0;background-position:62% center;background-image:linear-gradient(90deg,rgba(239,232,217,.34) 0%,rgba(239,232,217,.28) 48%,rgba(239,232,217,.16) 100%),url('interior.jpg');animation-name:heroBackdropCrossfadeMobile}
+  @keyframes heroBackdropCrossfadeMobile{0%,38%{opacity:0}50%,82%{opacity:1}94%,100%{opacity:0}}
+}
+
+
+/* v8: readable hero veil while keeping the photography visible */
+.hero::before{
+  background-image:
+    linear-gradient(180deg,rgba(239,232,217,.82) 0%,rgba(239,232,217,.56) 16%,rgba(239,232,217,.20) 42%,rgba(239,232,217,.04) 68%,rgba(239,232,217,0) 86%),
+    linear-gradient(90deg,rgba(239,232,217,.66) 0%,rgba(239,232,217,.42) 34%,rgba(239,232,217,.16) 58%,rgba(239,232,217,0) 82%),
+    url('fachada-wide.jpg');
+}
+.hero::after{
+  background-image:
+    linear-gradient(180deg,rgba(239,232,217,.82) 0%,rgba(239,232,217,.56) 16%,rgba(239,232,217,.20) 42%,rgba(239,232,217,.04) 68%,rgba(239,232,217,0) 86%),
+    linear-gradient(90deg,rgba(239,232,217,.66) 0%,rgba(239,232,217,.42) 34%,rgba(239,232,217,.16) 58%,rgba(239,232,217,0) 82%),
+    url('interior.jpg');
+}
+@media(max-width:760px){
+  .hero::before{
+    background-position:62% center;
+    background-image:
+      linear-gradient(180deg,rgba(239,232,217,.88) 0%,rgba(239,232,217,.64) 17%,rgba(239,232,217,.27) 43%,rgba(239,232,217,.06) 69%,rgba(239,232,217,0) 87%),
+      linear-gradient(90deg,rgba(239,232,217,.68) 0%,rgba(239,232,217,.40) 46%,rgba(239,232,217,.10) 76%,rgba(239,232,217,0) 100%),
+      url('fachada-wide.jpg');
+  }
+  .hero::after{
+    background-position:62% center;
+    background-image:
+      linear-gradient(180deg,rgba(239,232,217,.88) 0%,rgba(239,232,217,.64) 17%,rgba(239,232,217,.27) 43%,rgba(239,232,217,.06) 69%,rgba(239,232,217,0) 87%),
+      linear-gradient(90deg,rgba(239,232,217,.68) 0%,rgba(239,232,217,.40) 46%,rgba(239,232,217,.10) 76%,rgba(239,232,217,0) 100%),
+      url('interior.jpg');
+  }
+}
+
+/* v9: mobile hero contrast fix — dark translucent photography instead of a washed beige veil */
+@media (max-width: 1020px) {
+  .hero::before {
+    opacity: 1;
+    background-position: 62% center;
+    background-image:
+      linear-gradient(180deg, rgba(20,31,25,.62) 0%, rgba(20,31,25,.52) 34%, rgba(20,31,25,.43) 68%, rgba(20,31,25,.35) 100%),
+      url('fachada-wide.jpg');
+  }
+
+  .hero::after {
+    opacity: 0;
+    background-position: 62% center;
+    background-image:
+      linear-gradient(180deg, rgba(20,31,25,.62) 0%, rgba(20,31,25,.52) 34%, rgba(20,31,25,.43) 68%, rgba(20,31,25,.35) 100%),
+      url('interior.jpg');
+  }
+
+  .hero-copy {
+    color: var(--cream);
+    text-shadow: 0 2px 18px rgba(8,14,10,.18);
+  }
+
+  .hero .eyebrow {
+    color: #e5c9b6;
+    text-shadow: 0 1px 12px rgba(0,0,0,.22);
+  }
+
+  .hero h1 {
+    color: #fff8ec;
+    text-shadow: 0 2px 22px rgba(5,10,7,.22);
+  }
+
+  .hero h1 em {
+    color: #e9b6aa;
+  }
+
+  .hero-lead {
+    color: rgba(255,248,236,.91);
+    text-shadow: 0 1px 14px rgba(0,0,0,.22);
+  }
+
+  .hero-meta {
+    border-top-color: rgba(255,255,255,.28);
+  }
+
+  .hero-meta strong {
+    color: #fff8ec;
+  }
+
+  .hero-meta span {
+    color: rgba(255,248,236,.76);
+  }
+
+  .hero-actions .button-primary {
+    background: #f8f0df;
+    color: var(--green);
+    border-color: #f8f0df;
+    box-shadow: 0 12px 32px rgba(7,14,10,.22);
+  }
+
+  .hero-actions .button-primary:hover,
+  .hero-actions .button-primary:active {
+    background: #fffaf0;
+    color: var(--green);
+  }
+
+  .hero-actions .button-ghost {
+    color: #fff8ec;
+    border-color: rgba(255,255,255,.38);
+    background: rgba(16,25,20,.24);
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 10px 28px rgba(7,14,10,.08);
+  }
+
+  .hero-actions .button-ghost:hover,
+  .hero-actions .button-ghost:active {
+    background: rgba(16,25,20,.34);
+    border-color: rgba(255,255,255,.52);
+  }
+}
+
+/* v10: single fixed hero photo, no slideshow/crossfade */
+.hero::before {
+  opacity: 1 !important;
+  animation: none !important;
+  background-position: 62% center !important;
+  background-image:
+    linear-gradient(180deg, rgba(20,31,25,.74) 0%, rgba(20,31,25,.68) 34%, rgba(20,31,25,.61) 68%, rgba(20,31,25,.56) 100%),
+    url('fachada-wide.jpg') !important;
+}
+
+.hero::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  animation: none !important;
+  background-image: none !important;
+}
+
+@media (max-width: 1020px) {
+  .hero::before {
+    background-position: 62% center !important;
+    background-image:
+      linear-gradient(180deg, rgba(20,31,25,.74) 0%, rgba(20,31,25,.68) 34%, rgba(20,31,25,.61) 68%, rgba(20,31,25,.56) 100%),
+      url('fachada-wide.jpg') !important;
+  }
+}
+
+
+/* v12: WhatsApp glyph only inside regular buttons */
+.wa-icon{width:21px;height:21px;padding:0;border:0;border-radius:0;background:transparent;overflow:visible}
+.wa-icon img{width:100%;height:100%;object-fit:contain;mix-blend-mode:normal}

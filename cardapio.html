@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#273d31" />
+  <meta name="description" content="Cardápio demonstrativo do O Chapeleiro Café & Sebo. Monte seu pedido, escolha adicionais e envie tudo pronto pelo WhatsApp." />
+  <title>Cardápio demonstrativo | O Chapeleiro Café & Sebo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="common.css" />
+  <link rel="stylesheet" href="cardapio.css" />
+</head>
+<body>
+  <div class="paper-noise" aria-hidden="true"></div>
+  <div class="page-transition" id="pageTransition" aria-hidden="true">
+    <div class="page-transition-photo"></div>
+    <div class="page-transition-shade"></div>
+    <div class="page-transition-brand">
+      <strong>O Chapeleiro</strong><small>Café &amp; Sebo</small>
+    </div>
+  </div>
+
+  <header class="menu-header">
+    <a class="back-link" href="index.html?from=cardapio" data-page-link="home" aria-label="Voltar ao site">
+      <i data-lucide="arrow-left"></i>
+    </a>
+    <a class="menu-brand" href="index.html?from=cardapio" data-page-link="home" aria-label="O Chapeleiro Café e Sebo">
+      <span class="brand-seal"><i data-lucide="book-open"></i></span>
+      <span><strong>O Chapeleiro</strong><small>Café & Sebo</small></span>
+    </a>
+    <button class="header-cart" id="headerCart" type="button" aria-label="Abrir pedido">
+      <i data-lucide="shopping-bag"></i>
+      <span id="headerCartCount">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="menu-hero">
+      <div class="menu-hero-copy">
+        <div class="eyebrow"><span></span> cardápio demonstrativo</div>
+        <h1>Monte seu pedido<br><em>do seu jeito.</em></h1>
+        <p>Escolha os itens, ajuste quantidades, acrescente adicionais e deixe observações. No final, o pedido é montado automaticamente e aberto no WhatsApp.</p>
+        <div class="demo-note"><i data-lucide="info"></i><span>Os produtos e preços desta página são exemplos para demonstração do sistema.</span></div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <figure class="hero-photo hero-photo-main"><img src="mesa-cafe.jpg" alt="" /></figure>
+        <figure class="hero-photo hero-photo-small"><img src="xicara.jpg" alt="" /></figure>
+        <span class="hero-scribble">café + livro + pausa</span>
+      </div>
+    </section>
+
+    <div class="category-shell">
+      <nav class="category-bar" id="categoryBar" aria-label="Categorias do cardápio"></nav>
+    </div>
+
+    <section class="menu-content" id="menuContent" aria-live="polite"></section>
+
+    <section class="how-it-works">
+      <div class="how-title">
+        <div class="eyebrow light"><span></span> simples de pedir</div>
+        <h2>Do cardápio<br><em>para o WhatsApp.</em></h2>
+      </div>
+      <div class="steps">
+        <article><span>01</span><i data-lucide="hand"></i><h3>Escolha</h3><p>Abra qualquer produto e selecione quantidade e adicionais.</p></article>
+        <article><span>02</span><i data-lucide="message-square-text"></i><h3>Personalize</h3><p>Inclua observações específicas para cada item do pedido.</p></article>
+        <article><span>03</span><i data-lucide="send"></i><h3>Envie</h3><p>O WhatsApp abre com a mensagem inteira organizada e pronta.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <button class="floating-cart" id="floatingCart" type="button" aria-label="Ver pedido" hidden>
+    <span class="cart-icon-wrap"><i data-lucide="shopping-bag"></i><b id="floatingCount">0</b></span>
+    <span class="floating-cart-copy"><small>Seu pedido</small><strong id="floatingTotal">R$ 0,00</strong></span>
+    <span class="floating-cart-action">Ver pedido <i data-lucide="arrow-right"></i></span>
+  </button>
+
+  <div class="sheet-backdrop" id="productBackdrop" hidden></div>
+  <section class="product-sheet" id="productSheet" aria-hidden="true" aria-labelledby="productTitle">
+    <div class="sheet-handle" id="sheetHandle" aria-hidden="true"></div>
+    <button class="sheet-close" id="productClose" type="button" aria-label="Fechar produto"><i data-lucide="x"></i></button>
+    <div class="product-sheet-scroll">
+      <div class="sheet-image-wrap">
+        <img class="sheet-product-image" id="productImage" src="" alt="" draggable="false" />
+        <div class="sheet-drag-zone" id="sheetDragZone" aria-hidden="true"></div>
+      </div>
+      <div class="sheet-copy">
+        <span class="sheet-category" id="productCategory"></span>
+        <h2 id="productTitle"></h2>
+        <p id="productDescription"></p>
+        <strong class="sheet-base-price" id="productPrice"></strong>
+      </div>
+      <div class="option-group" id="sizeGroup" hidden>
+        <div class="option-heading"><div><strong>Escolha o tamanho</strong><span>selecione 1 opção</span></div><b>Obrigatório</b></div>
+        <div class="radio-list" id="sizeOptions"></div>
+      </div>
+      <div class="option-group" id="extrasGroup">
+        <div class="option-heading"><div><strong>Adicionais</strong><span>selecione quantos quiser</span></div><b class="optional">Opcional</b></div>
+        <div class="check-list" id="extraOptions"></div>
+      </div>
+      <div class="option-group">
+        <div class="option-heading"><div><strong>Alguma observação?</strong><span>ex.: sem açúcar, aquecer bem...</span></div><b class="optional">Opcional</b></div>
+        <textarea id="productNote" maxlength="180" placeholder="Escreva aqui..." rows="3"></textarea>
+        <div class="char-count"><span id="noteCount">0</span>/180</div>
+      </div>
+    </div>
+    <div class="sheet-footer">
+      <div class="qty-control" aria-label="Quantidade">
+        <button id="qtyMinus" type="button" aria-label="Diminuir quantidade"><i data-lucide="minus"></i></button>
+        <strong id="qtyValue">1</strong>
+        <button id="qtyPlus" type="button" aria-label="Aumentar quantidade"><i data-lucide="plus"></i></button>
+      </div>
+      <button class="add-button" id="addProduct" type="button"><span>Adicionar</span><strong id="addPrice">R$ 0,00</strong></button>
+    </div>
+  </section>
+
+  <div class="sheet-backdrop" id="cartBackdrop" hidden></div>
+  <aside class="cart-sheet" id="cartSheet" aria-hidden="true" aria-labelledby="cartTitle">
+    <div class="cart-head">
+      <div><span>seu pedido</span><h2 id="cartTitle">Quase pronto.</h2></div>
+      <button class="sheet-close inline" id="cartClose" type="button" aria-label="Fechar pedido"><i data-lucide="x"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-empty" id="cartEmpty">
+      <div><i data-lucide="coffee"></i></div>
+      <h3>Seu pedido ainda está vazio.</h3>
+      <p>Uma situação grave, porém facilmente reversível.</p>
+    </div>
+    <div class="cart-summary" id="cartSummary" hidden>
+      <div class="summary-row"><span>Itens</span><strong id="summaryItems">0</strong></div>
+      <div class="summary-row total"><span>Subtotal demonstrativo</span><strong id="summaryTotal">R$ 0,00</strong></div>
+      <p>Valores e disponibilidade devem ser confirmados com o estabelecimento.</p>
+      <button class="whatsapp-order" id="sendOrder" type="button">
+        <span class="wa-mark"><img src="whatsapp-logo-source.png" alt="" /></span>
+        <span>Fazer pedido no WhatsApp</span>
+        <i data-lucide="arrow-up-right"></i>
+      </button>
+      <button class="clear-cart" id="clearCart" type="button">Limpar pedido</button>
+    </div>
+  </aside>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="cardapio.js"></script>
+</body>
+</html>

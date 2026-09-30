@@ -4,6 +4,38 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
+  // Smooth handoff between the institutional page and the menu.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const pageTransition = $('#pageTransition');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const finishPageEnter = () => {
+    requestAnimationFrame(() => setTimeout(() => pageTransition?.classList.remove('is-active'), reducedMotion ? 0 : 230));
+  };
+  const forceTopIfReturning = () => {
+    const url = new URL(location.href);
+    const shouldReset = url.searchParams.get('from') === 'cardapio' || sessionStorage.getItem('chapeleiro-return-top') === '1';
+    if (!shouldReset) return;
+    sessionStorage.removeItem('chapeleiro-return-top');
+    window.scrollTo(0, 0);
+    requestAnimationFrame(() => window.scrollTo(0, 0));
+    if (url.searchParams.has('from')) {
+      url.searchParams.delete('from');
+      history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    }
+  };
+  window.addEventListener('pageshow', () => { forceTopIfReturning(); finishPageEnter(); });
+  forceTopIfReturning();
+  finishPageEnter();
+
+  $$('[data-page-link="cardapio"]').forEach(link => link.addEventListener('click', e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || link.target === '_blank') return;
+    e.preventDefault();
+    const href = link.href;
+    pageTransition?.classList.add('is-active');
+    setTimeout(() => { location.href = href; }, reducedMotion ? 20 : 1430);
+  }));
+
   if (window.lucide) lucide.createIcons({ attrs: { 'aria-hidden': 'true' } });
 
   // Mobile menu
@@ -36,68 +68,113 @@
     observer.observe(el);
   });
 
-  // Snap carousel helpers: move by the nearest card width for stable navigation.
-  const getStep = (carousel) => {
-    const item = carousel.firstElementChild;
-    if (!item) return carousel.clientWidth * .8;
-    const styles = getComputedStyle(carousel);
-    const gap = parseFloat(styles.columnGap || styles.gap || 0);
-    return item.getBoundingClientRect().width + gap;
-  };
-  const move = (id, dir) => {
-    const carousel = document.getElementById(id);
-    if (!carousel) return;
-    carousel.scrollBy({ left: getStep(carousel) * dir, behavior: 'smooth' });
-  };
-  $$('[data-carousel-prev]').forEach(btn => btn.addEventListener('click', () => move(btn.dataset.carouselPrev, -1)));
-  $$('[data-carousel-next]').forEach(btn => btn.addEventListener('click', () => move(btn.dataset.carouselNext, 1)));
-
-  // Dot indicators + click-to-jump
-  $$('[data-carousel]').forEach(carousel => {
+  // Carrossel: mesma mecânica do Buffet Fly Park / RE9.
+  // Em touch, o navegador cuida 100% do gesto nativo. Nada de pointermove/touchmove
+  // brigando com o scroll vertical da página. JS só arrasta com mouse no desktop.
+  const setupCarousel = carousel => {
     const id = carousel.id;
-    const progress = document.querySelector(`[data-progress-for="${id}"]`);
     const items = [...carousel.children];
-    if (!progress || !items.length) return;
+    if (!items.length) return;
 
-    const dots = items.map((_, idx) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.setAttribute('aria-label', `Ir para item ${idx + 1}`);
-      dot.addEventListener('click', () => items[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }));
-      progress.appendChild(dot);
-      return dot;
-    });
+    const progress = document.querySelector(`[data-progress-for="${id}"]`);
+    const prevBtn = document.querySelector(`[data-carousel-prev="${id}"]`);
+    const nextBtn = document.querySelector(`[data-carousel-next="${id}"]`);
+    const firstLeft = items[0]?.offsetLeft ?? 0;
+    const targetLeft = item => Math.max(0, item.offsetLeft - firstLeft);
 
-    const update = () => {
-      const left = carousel.getBoundingClientRect().left;
-      let best = 0, bestDistance = Infinity;
-      items.forEach((item, idx) => {
-        const distance = Math.abs(item.getBoundingClientRect().left - left);
-        if (distance < bestDistance) { bestDistance = distance; best = idx; }
-      });
-      dots.forEach((dot, idx) => dot.classList.toggle('active', idx === best));
-    };
+    let active = 0;
     let raf = 0;
+
+    if (progress) {
+      progress.innerHTML = '';
+      items.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Item ${index + 1} de ${items.length}`);
+        if (index === 0) dot.classList.add('active');
+        progress.appendChild(dot);
+      });
+    }
+
+    const dots = progress ? [...progress.children] : [];
+
+    const goTo = index => {
+      const item = items[Math.max(0, Math.min(items.length - 1, index))];
+      if (!item) return;
+      carousel.scrollTo({ left: targetLeft(item), behavior: 'smooth' });
+    };
+
+    const nearest = () => {
+      const left = carousel.scrollLeft;
+      let best = 0;
+      let distance = Infinity;
+      items.forEach((item, index) => {
+        const d = Math.abs(targetLeft(item) - left);
+        if (d < distance) {
+          distance = d;
+          best = index;
+        }
+      });
+
+      if (best !== active) {
+        dots[active]?.classList.remove('active');
+        active = best;
+        dots[active]?.classList.add('active');
+      }
+    };
+
     carousel.addEventListener('scroll', () => {
       cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
+      raf = requestAnimationFrame(nearest);
     }, { passive: true });
 
-    // A roda do mouse continua rolando a página mesmo com o cursor sobre o carrossel.
-    // Movimento horizontal de trackpad permanece reservado ao próprio carrossel.
-    carousel.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    prevBtn?.addEventListener('click', () => goTo(active - 1));
+    nextBtn?.addEventListener('click', () => goTo(active + 1));
 
+    // Igual ao Fly Park: touch fica totalmente nativo.
+    // Drag manual existe apenas para mouse de desktop.
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+    let pointerId = null;
+
+    carousel.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      dragging = true;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startScroll = carousel.scrollLeft;
+      carousel.classList.add('is-dragging');
+      carousel.setPointerCapture?.(e.pointerId);
       e.preventDefault();
-      let deltaY = e.deltaY;
-      if (e.deltaMode === 1) deltaY *= 16;
-      else if (e.deltaMode === 2) deltaY *= window.innerHeight;
+    });
 
-      window.scrollBy({ top: deltaY, left: 0, behavior: 'auto' });
-    }, { passive: false });
-    window.addEventListener('resize', update, { passive: true });
-    update();
-  });
+    carousel.addEventListener('pointermove', e => {
+      if (!dragging || e.pointerId !== pointerId) return;
+      carousel.scrollLeft = startScroll - (e.clientX - startX);
+    });
+
+    const stopDrag = e => {
+      if (!dragging) return;
+      if (e?.pointerId != null && pointerId != null && e.pointerId !== pointerId) return;
+      dragging = false;
+      carousel.classList.remove('is-dragging');
+      if (pointerId != null && carousel.hasPointerCapture?.(pointerId)) {
+        carousel.releasePointerCapture(pointerId);
+      }
+      pointerId = null;
+      nearest();
+      goTo(active);
+    };
+
+    carousel.addEventListener('pointerup', stopDrag);
+    carousel.addEventListener('pointercancel', stopDrag);
+    carousel.addEventListener('dragstart', e => e.preventDefault());
+
+    nearest();
+  };
+
+  $$('[data-carousel]').forEach(setupCarousel);
 
   // Subtle 3D tilt only on devices that actually have a pointing device.
   const canTilt = matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches;

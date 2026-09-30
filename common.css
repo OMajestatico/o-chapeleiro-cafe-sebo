@@ -1,0 +1,11 @@
+/* Shared page transition between the institutional site and the menu. */
+.page-transition{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;overflow:hidden;background:#273d31;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .34s cubic-bezier(.2,.7,.2,1),visibility 0s linear .34s}
+.page-transition.is-active{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
+.page-transition-photo{position:absolute;inset:-3%;background:url('fachada-wide.jpg') center/cover no-repeat;transform:scale(1.055);filter:saturate(.72) contrast(.95);transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.page-transition.is-active .page-transition-photo{transform:scale(1.008)}
+.page-transition-shade{position:absolute;inset:0;background:linear-gradient(135deg,rgba(25,38,31,.88),rgba(39,61,49,.68) 52%,rgba(74,45,40,.74))}
+.page-transition-brand{position:relative;z-index:1;display:grid;justify-items:center;color:#f8f2e6;opacity:0;transform:scale(.91);transition:opacity .22s ease,transform 1.12s cubic-bezier(.16,.78,.18,1)}
+.page-transition.is-active .page-transition-brand{opacity:1;transform:scale(1.055)}
+.page-transition-brand strong{font:600 clamp(38px,8vw,72px)/.9 "Cormorant Garamond",Georgia,serif;letter-spacing:-.04em}
+.page-transition-brand small{margin-top:10px;font:700 9px/1 "Manrope",system-ui,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:rgba(248,242,230,.68)}
+@media(prefers-reduced-motion:reduce){.page-transition,.page-transition-photo,.page-transition-brand{transition-duration:.01ms!important}}

@@ -9,10 +9,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="common.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="paper-noise" aria-hidden="true"></div>
+  <div class="page-transition" id="pageTransition" aria-hidden="true">
+    <div class="page-transition-photo"></div>
+    <div class="page-transition-shade"></div>
+    <div class="page-transition-brand">
+      <strong>O Chapeleiro</strong><small>Café &amp; Sebo</small>
+    </div>
+  </div>
   <header class="site-header" id="top">
     <a class="brand" href="#top" aria-label="O Chapeleiro Café e Sebo">
       <span class="brand-seal"><i data-lucide="book-open"></i></span>
@@ -26,6 +34,7 @@
       <a href="#experiencia">Experiência</a>
       <a href="#sabores">Sabores</a>
       <a href="#galeria">Galeria</a>
+      <a href="cardapio.html" data-page-link="cardapio">Cardápio</a>
       <a href="#visite">Visite</a>
     </nav>
 
@@ -54,7 +63,8 @@
       <a href="#experiencia"><span>01</span> Experiência</a>
       <a href="#sabores"><span>02</span> Sabores</a>
       <a href="#galeria"><span>03</span> Galeria</a>
-      <a href="#visite"><span>04</span> Visite</a>
+      <a href="cardapio.html" data-page-link="cardapio"><span>04</span> Cardápio</a>
+      <a href="#visite"><span>05</span> Visite</a>
     </nav>
     <div class="mobile-menu-foot">
       <p>Café especial, livros e um tempo um pouco menos apressado.</p>
@@ -69,9 +79,11 @@
         <h1>Café, livros<br><em>e tempo sem pressa.</em></h1>
         <p class="hero-lead">Uma casa antiga, xícaras bem cuidadas, estantes cheias de histórias e aquele tipo raro de ambiente que faz vc esquecer por alguns minutos que existe notificação.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="https://wa.me/5565981372242" target="_blank" rel="noopener">
-            <span class="wa-icon"><img src="whatsapp-logo-source.png" alt="" /></span>
-            Chamar no WhatsApp
+          <a class="button button-primary" href="cardapio.html" data-page-link="cardapio">
+            <i data-lucide="utensils"></i> Abrir cardápio
+          </a>
+          <a class="button button-ghost" href="https://wa.me/5565981372242" target="_blank" rel="noopener">
+            <span class="wa-icon"><img src="whatsapp-logo-source.png" alt="" /></span> Chamar no WhatsApp
           </a>
           <a class="button button-ghost" href="https://www.google.com/maps/search/?api=1&query=O+Chapeleiro+Caf%C3%A9+e+Sebo+Cuiab%C3%A1" target="_blank" rel="noopener">
             <i data-lucide="map-pin"></i> Como chegar
@@ -202,7 +214,8 @@
         </article>
       </div>
       <div class="carousel-progress" data-progress-for="flavorCarousel" aria-label="Posição do carrossel"></div>
-      <p class="menu-note"><i data-lucide="info"></i> Cardápio e disponibilidade podem mudar. Para confirmar itens do dia, fale direto com a casa.</p>
+      <div class="menu-demo-cta reveal"><div><span>cardápio interativo</span><h3>Monte um pedido completo.</h3><p>Escolha itens, adicionais, quantidades e observações. No final, envie tudo pronto pelo WhatsApp.</p></div><a class="button button-primary" href="cardapio.html" data-page-link="cardapio"><i data-lucide="utensils"></i> Abrir cardápio</a></div>
+      <p class="menu-note"><i data-lucide="info"></i> A página de cardápio é demonstrativa. Produtos, valores e disponibilidade podem mudar.</p>
     </section>
 
     <section class="quote-section section-shell reveal">
@@ -252,7 +265,8 @@
           </div>
         </div>
         <div class="map-wrap" aria-label="Mapa da região do O Chapeleiro Café e Sebo">
-          <iframe title="Mapa do O Chapeleiro Café e Sebo" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=-56.1065%2C-15.5955%2C-56.0972%2C-15.5872&amp;layer=mapnik&amp;marker=-15.5912999%2C-56.101825"></iframe>
+          <iframe title="Mapa do O Chapeleiro Café e Sebo" loading="lazy" tabindex="-1" aria-hidden="true" src="https://www.google.com/maps?q=Rua%20Marechal%20Floriano%20Peixoto%2C%20512%2C%20Quilombo%2C%20Cuiab%C3%A1%20MT&amp;output=embed"></iframe>
+          <div class="map-static-shield" aria-hidden="true"></div>
           <div class="map-badge"><i data-lucide="map-pin"></i><span>Quilombo<br><strong>Cuiabá · MT</strong></span></div>
         </div>
       </div>
@@ -266,7 +280,7 @@
         <div><h2>O Chapeleiro</h2><p>Café & Sebo</p></div>
       </div>
       <div class="footer-links">
-        <div><span>Navegação</span><a href="#experiencia">Experiência</a><a href="#sabores">Sabores</a><a href="#galeria">Galeria</a><a href="#visite">Visite</a></div>
+        <div><span>Navegação</span><a href="#experiencia">Experiência</a><a href="#sabores">Sabores</a><a href="#galeria">Galeria</a><a href="cardapio.html" data-page-link="cardapio">Cardápio</a><a href="#visite">Visite</a></div>
         <div><span>Contato</span><a href="tel:+5565981372242">(65) 98137-2242</a><a href="https://instagram.com/ochapeleirocafesebo" target="_blank" rel="noopener">Instagram</a><a href="https://wa.me/5565981372242" target="_blank" rel="noopener">WhatsApp</a></div>
       </div>
     </div>
