@@ -178,3 +178,23 @@ a{color:inherit;text-decoration:none}
   .sheet-handle{z-index:7;pointer-events:auto}
 }
 @media(min-width:700px){.sheet-image-wrap{height:300px}}
+
+/* v17: compact desktop ordering experience */
+@media (min-width:1050px){
+  .menu-hero{padding-top:118px;grid-template-columns:1.12fr .88fr;gap:44px}
+  .menu-hero h1{font-size:clamp(66px,6vw,88px)}
+  .hero-visual{height:390px}
+  .hero-photo-main{height:350px;width:74%;border-radius:130px 130px 22px 22px}
+  .hero-photo-small{height:190px;width:39%}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .product-card{display:grid;grid-template-columns:150px minmax(0,1fr);min-height:150px;border-radius:18px}
+  .product-card-image{height:auto;min-height:150px}
+  .product-card-copy{padding:17px 18px}
+  .product-card-copy h3{font-size:25px}
+  .product-card-copy p{font-size:10px;-webkit-line-clamp:2}
+  .plus-mark{width:30px;height:30px}
+  .product-sheet{width:min(760px,calc(100% - 44px));height:min(82vh,760px);bottom:28px}
+  .sheet-image-wrap,.sheet-product-image{height:250px}
+  .cart-sheet{width:min(440px,100%)}
+  .floating-cart{width:360px}
+}
